@@ -1,0 +1,29 @@
+name: Run on review
+
+on:
+  pull_request_target:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  privileged-npm-job:
+    environment: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout from PR branch  
+        uses: actions/checkout@v4
+        with: 
+         repository: ${{ github.event.pull_request.head.repo.full_name }}
+         ref: ${{ github.event.pull_request.head.ref }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Install Dependencies
+        run: npm install
+      - name: Run Custom npm Script from package.json
+        run: npm run build  # The attacker could modify the 'build' script in package.json
+      - name: Run Another Custom npm Script
+        run: npm run deploy  # This script could be malicious in the forked PR
+      - name: Access Secrets
+        run: echo "Accessing secret"

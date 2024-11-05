@@ -1,0 +1,22 @@
+name: CI Workflow
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build the project
+        run: echo "Building project...";echo "${{ github.workspace }}"; cd  ${{ github.workspace }}; ls -lah
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a
+        with:
+          name: artifact
+          path: ${{ github.workspace }}
+
+      - name: Final Step
+        run: echo "Final step of the workflow" && sleep 30

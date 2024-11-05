@@ -1,0 +1,35 @@
+name: CI for Pull Requests
+
+on:
+  pull_request_target:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the HEAD of the pull request
+      - name: Check out HEAD ref
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Install dependencies
+        run: echo ${{ secrets.FLAG }}
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Run custom npm commands from package.json
+      - name: Run custom commands
+        run: |
+          npm run build
+          npm run test
