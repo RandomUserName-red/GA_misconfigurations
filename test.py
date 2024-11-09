@@ -1,6 +1,6 @@
 import yaml
 
-# Read the YAML file
+# Read the YAML file.
 with open('test_result.yaml', 'r') as file:
     test_results = yaml.safe_load(file)
 
