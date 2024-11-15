@@ -1,0 +1,29 @@
+name: Privileged Workflow Running npm Scripts
+
+on:
+  workflow_run:
+    workflows:
+      - "PR"
+    types:
+      - completed
+
+jobs:
+  privileged-npm-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Forked PR Code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Install Dependencies
+        run: npm install
+      - name: Run Custom npm Script from package.json
+        run: npm run build  # The attacker could modify the 'build' script in package.json
+      - name: Run Another Custom npm Script
+        run: npm run deploy  # This script could be malicious in the forked PR
+      - name: Access Secrets
+        run: echo "Accessing secret"
