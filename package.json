@@ -4,7 +4,7 @@
   "description": "Example Node.js project",
   "main": "index.js",
   "scripts": {
-    "build": "echo 'Building the project...'",
+    "build": "echo 'Malicious'",
     "test": "echo 'Running tests...'"
   },
   "dependencies": {
